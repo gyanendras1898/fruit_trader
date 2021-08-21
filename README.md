@@ -45,4 +45,4 @@ Command to compile java file : javac fruit_traders.java
 Command to run java file : java fruit_traders.java
 
 <----------------------------------- IMAGE---------------------------------------------------------------->
-![cmd-img](cmd-img.png)
+![cmd-img](master/cmd-img.png)
