@@ -1,9 +1,5 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.io.*;
+import java.util.*;
 
 public class fruit_trader {
     private static HashMap<String, Deque<Stock>> fruit_cart;
@@ -25,7 +21,6 @@ public class fruit_trader {
         while (true) {
             try {
                 String input = br.readLine();
-                // System.out.println(input);
                 if (input.equals("PROFIT"))
                     System.out.println(totalProfit);
                 else {
@@ -36,12 +31,18 @@ public class fruit_trader {
                     int quantity = Integer.parseInt(inputArr[3]);
                     Stock stock = new Stock(priceRate, quantity);
 
-                    if (opperation.equals("BUY"))
+                    if (opperation.equals("BUY")) {
+                        System.out.println("BOUGHT " + quantity + " KG APPLE AT " + priceRate + " RUPEES/KG");
                         buyFruit(fruitName, stock);
-                    else
+                    }
+
+                    else {
+                        System.out.println("SOLD " + quantity + " KG APPLE AT " + priceRate + " RUPEES/KG");
                         sellFruit(fruitName, stock);
+                    }
+
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 break;
             }
         }
@@ -62,10 +63,10 @@ public class fruit_trader {
         int availableQuantity = stock.quantity;
         int SP = availableQuantity * stock.priceRate;
         int CP = 0;
-        Deque deque = fruit_cart.get(fruitName);
+        Deque<Stock> deque = fruit_cart.get(fruitName);
 
         while (availableQuantity != 0) {
-            Stock front = (Stock) deque.poll();
+            Stock front = deque.poll();
             if (front.quantity <= availableQuantity) {
                 int quantitySold = front.quantity;
                 CP += quantitySold * front.priceRate;
@@ -81,5 +82,4 @@ public class fruit_trader {
         }
         totalProfit += (SP - CP);
     }
-
 }
