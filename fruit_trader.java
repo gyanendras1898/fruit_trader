@@ -17,12 +17,16 @@ public class fruit_trader {
 
     public static void main(String args[]) {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Enter \"VIEWCART\" to view your current fruit-items");
         fruit_cart = new HashMap<>();
         while (true) {
             try {
                 String input = br.readLine();
                 if (input.equals("PROFIT"))
                     System.out.println(totalProfit);
+
+                else if (input.equals("VIEWCART"))
+                    viewCart(fruit_cart);
 
                 else {
                     String[] inputArr = input.trim().split(" ");
@@ -31,22 +35,30 @@ public class fruit_trader {
                     int priceRate = Integer.parseInt(inputArr[2]);
                     int quantity = Integer.parseInt(inputArr[3]);
                     Stock stock = new Stock(priceRate, quantity);
-
                     if (opperation.equals("BUY")) {
                         System.out
                                 .println("BOUGHT " + quantity + " KG " + fruitName + " AT " + priceRate + " RUPEES/KG");
                         buyFruit(fruitName, stock);
-                    }
-
-                    else {
+                    } else {
                         System.out.println("SOLD " + quantity + " KG " + fruitName + " AT " + priceRate + " RUPEES/KG");
                         sellFruit(fruitName, stock);
                     }
-
                 }
             } catch (Exception e) {
                 System.out.println(e);
                 break;
+            }
+        }
+    }
+
+    private static void viewCart(HashMap<String, Deque<Stock>> fruit_cart) {
+        for (String ele : fruit_cart.keySet()) {
+            System.out.print(ele + " ");
+            Deque<Stock> d = fruit_cart.get(ele);
+            Iterator<Stock> iteratorVals = d.iterator();
+            while (iteratorVals.hasNext()) {
+                Stock f = iteratorVals.next();
+                System.out.println(f.priceRate + " " + f.quantity);
             }
         }
     }
@@ -69,7 +81,6 @@ public class fruit_trader {
         int SP = availableQuantity * stock.priceRate;
         int CP = 0;
         Deque<Stock> deque = fruit_cart.get(fruitName);
-
         while (availableQuantity != 0) {
             if (!deque.isEmpty()) {
                 Stock front = deque.poll();
